@@ -1,7 +1,9 @@
 FROM debian:12
 
-RUN apt upgrade -y && apt install nginx -y && apt install openssl -y
+RUN apt update -y && apt install openssl nginx -y
 
+COPY server.conf /
+COPY www /
 COPY start.sh /
 
 CMD ["/start.sh"]
