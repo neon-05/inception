@@ -1,5 +1,8 @@
 FROM debian:12
 
-RUN apt update && apt install php-fpm -y
+RUN apt update && apt install php-fpm php-mysql curl -y
 
-CMD ["php-fpm8.2", "-F"]
+COPY start.sh /
+COPY wp-config.php /var/www/html/
+
+CMD ["/start.sh"]

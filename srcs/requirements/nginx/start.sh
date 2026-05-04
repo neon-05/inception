@@ -1,7 +1,6 @@
 #!/bin/bash
-echo "hello world"
-#openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /selfsigned.key -out /selfsigned.crt -subj "/C=SW/O=42/OU=student/CN=ylabussi.42.fr)"
+echo nginx startup
 
+openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/nginx/ssl/inception.key -subj "/C=CH/ST=VD/L=Lausanne/O=42/CN=ylabussi.42.fr/UID=ylabussi/"
 
-nginx -c /server.conf;
-
+nginx -g "daemon off;"
