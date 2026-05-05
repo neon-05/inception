@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 
 volumes:
   wordpress:
@@ -18,7 +18,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - wordpress: /var/www/html/
+      - wordpress:/var/www/html/
     networks:
       - inception
     depends_on:
@@ -29,7 +29,7 @@ services:
     container_name: wordpress
     build: requirements/wordpress/
     volumes:
-      - wordpress: /var/www/html/
+      - wordpress:/var/www/html/
     networks: 
       - inception
     depends_on:
@@ -40,5 +40,7 @@ services:
     container_name: mariadb
     build: requirements/mariadb/
     volumes:
-      - mariadb: /var/lib/mysql
-
+      - mariadb:/var/lib/mysql/
+    networks:
+      - inception
+    restart: unless-stopped
