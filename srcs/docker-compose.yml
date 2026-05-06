@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 
 volumes:
   wordpress:
@@ -24,7 +24,9 @@ services:
     depends_on:
       - wordpress
     restart: unless-stopped
-  
+    env_file:
+      - .env
+
   wordpress:
     container_name: wordpress
     build: requirements/wordpress/
@@ -35,6 +37,8 @@ services:
     depends_on:
       - mariadb
     restart: unless-stopped
+    env_file:
+      - .env
 
   mariadb:
     container_name: mariadb
@@ -44,3 +48,5 @@ services:
     networks:
       - inception
     restart: unless-stopped
+    env_file:
+      - .env
