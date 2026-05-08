@@ -1,13 +1,26 @@
 #!/bin/bash
 echo mariadb startup
 
-service mariadb start
 
-echo "CREATE DATABASE IF NOT EXISTS $db_name ;" > db1.sql
-echo "CREATE USER IF NOT EXISTS '$db_usr'@'%' IDENTIFIED BY '$db_pwd' ;" >> db1.sql
-echo "GRANT ALL PRIVILEGES ON $db_name.* TO '$db_usr'@'%' ;" >> db1.sql
-echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '12345' ;" >> db1.sql
-echo "FLUSH PRIVILEGES ;" >> db1.sql
+mysqld_safe --datadir=/var/lib/mysql &
 
-mariadb < db1.sql
+until mysqladmin ping --silent; do
+	sleep 1
+done
+
+if [! -d "/var/lib/mysql/$db_name"]; then
+	echo "DB Init"
+	mysql -u root << EOF
+CREATE DATABASE IF NOT EXTISTS \`$db_name\`;
+CREATE USER IF NOT EXISTS \`$db_usr\`@'%' IDENTIFIED BY '$db_pwd';
+GRANT ALL PRIVILEGES ON \`$db_name\`.* TO \`$db_usr\`@'%';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '$db_rpwd';
+FLUSH PRIVILEGES;
+EOF
+else
+	echo "skip DB Init"
+fi
+mysqladmin -u root -p$db_rpwd shutdown
+
+mysqld_safe
 
