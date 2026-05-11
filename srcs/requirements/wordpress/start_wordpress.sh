@@ -1,10 +1,6 @@
 #!/bin/bash
 echo wordpress startup
 
-until mysqladmin ping -h"mariadb" --silent; do
-	sleep 1
-done
-
 cd /var/www/html/
 
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -12,6 +8,7 @@ chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 
 wp core download --allow-root
+mv /wp-config.php /var/www/html/
 wp core install \
 	--url=$DOMAIN_NAME/ \
 	--title=$WP_TITLE \
