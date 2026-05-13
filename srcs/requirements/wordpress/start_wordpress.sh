@@ -3,6 +3,10 @@ echo wordpress startup
 
 cd /var/www/html/
 
+until mysqladmin ping -h"mariadb" --silent; do
+	sleep 1
+done
+
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
