@@ -12,7 +12,13 @@ chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 
 wp core download --allow-root
-mv /wp-config.php /var/www/html/
+
+cp wp-config-sample.php wp-config.php
+sed -i "s/database_name_here/wordpress/" /var/www/html/wp-config.php
+sed -i "s/username_here/wpuser/" /var/www/html/wp-config.php
+sed -i "s/password_here/wppassword/" /var/www/html/wp-config.php
+sed -i "s/localhost/mariadb/" /var/www/html/wp-config.php
+
 wp core install \
 	--url=$DOMAIN_NAME/ \
 	--title=$WP_TITLE \

@@ -1,8 +1,17 @@
 FROM debian:12
 
-RUN apt update && apt install mariadb-server -y
+ENV DEBIAN_FRONTEND=noninteractive
 
-COPY start_mariadb.sh /
-COPY my.cnf /etc/mysql/mariadb.conf.d/
+RUN apt-get update && \
+    apt-get install -y mariadb-server && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-CMD ["/start_mariadb.sh"]
+RUN mkdir -p /var/lib/mysql && \
+    chown -R mysql:mysql /var/lib/mysql
+
+VOLUME ["/var/lib/mysql"]
+
+EXPOSE 3306
+
+CMD ["mysqld"]
