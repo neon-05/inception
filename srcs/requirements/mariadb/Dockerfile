@@ -7,11 +7,13 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /var/lib/mysql && \
-    chown -R mysql:mysql /var/lib/mysql
+RUN mkdir -p /run/mysqld && \
+    chown -R mysql:mysql /run/mysqld
 
-VOLUME ["/var/lib/mysql"]
+COPY start_mariadb.sh /
+
+RUN chmod +x /start_mariadb.sh
 
 EXPOSE 3306
 
-CMD ["mysqld"]
+ENTRYPOINT ["/start_mariadb.sh"]
