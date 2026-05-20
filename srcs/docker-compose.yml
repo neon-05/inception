@@ -9,7 +9,6 @@ networks:
     name: inception
 
 services:
-  
   nginx:
     container_name: nginx
     build: requirements/nginx/
@@ -37,6 +36,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+      - secrets/wp-secrets
+      - secrets/db-secrets
 
   mariadb:
     container_name: mariadb
@@ -48,3 +49,4 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+      - secrets/db-secrets
